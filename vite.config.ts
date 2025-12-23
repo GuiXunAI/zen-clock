@@ -4,9 +4,10 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   define: {
-    // 必须使用 JSON.stringify 以确保它被编译为 JS 对象字面量 {}
-    'process.env': JSON.stringify({}),
-    'global': 'window'
+    // 精准注入环境变量，避免整体替换 process.env 导致的 ({}) 错误
+    'process.env.API_KEY': JSON.stringify(process.env.API_KEY),
+    'process.env.NODE_ENV': JSON.stringify('production'),
+    'global': 'globalThis'
   },
   build: {
     outDir: 'dist',
